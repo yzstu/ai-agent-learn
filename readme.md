@@ -16,30 +16,23 @@ AI Agent Learn 是一个基于 `langchain` 的智能代理项目，旨在通过�
 
 1. 初始化 `MyAgent`：
    ```python
-   from core import MyAgent
-   from langchain_core.language_models import SomeChatModel
+    import argparse
+    from core.agent import AIAgent
 
-   llm = SomeChatModel()
-   tools = []  # 自定义工具列表
-   agent = MyAgent(llm, tools)
+    # 初始化Agent
+    agent = AIAgent()
+    agent.set_model(args.model)
    ```
 
 2. 执行任务：
    ```python
-   task_description = "帮我总结这段文字"
-   response = agent.run(task_description)
-   print(response)
-   ```
-
-3. 配置国内源（可选）：
-   ```python
-   agent.configure_download(proxy="http://127.0.0.1:7890", mirror_url="https://mirror.example.com/huggingface")
+   agent.process_message(user_input)
    ```
 
 ## 项目进度
 
-- [x] 基础框架搭建
-- [x] 集成语言模型
+- [y] 基础框架搭建
+- [y] 集成语言模型
 - [ ] 工具链扩展
 - [ ] 增加更多任务处理逻辑
 - [ ] 编写测试用例
