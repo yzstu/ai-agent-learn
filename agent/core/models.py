@@ -1,3 +1,4 @@
+import ollama
 import requests
 import json
 from typing import Dict, Any, List
@@ -40,23 +41,20 @@ class OllamaModel(ModelProvider):
     def __init__(self):
         self.base_url = settings.OLLAMA_BASE_URL
         self.model = settings.OLLAMA_MODEL
+        
     
     def chat_completion(self, messages: List[Dict[str, str]], **kwargs) -> str:
         # 将对话历史转换为 Ollama 格式
         # 注意: Ollama 的 API 格式与 OpenAI 略有不同
         prompt = self._format_messages(messages)
         
-        payload = {
-            "model": self.model,
-            "prompt": prompt,
-            "stream": False,
-            **kwargs
-        }
-        
         try:
-            response = requests.post(f"{self.base_url}/api/generate", json=payload)
-            response.raise_for_status()
-            return response.json()["response"]
+            # 异步生成
+            response = ollama.Client().generate(
+                model=self.model,
+                prompt=prompt
+            )
+            return response['response']
         except Exception as e:
             return f"Error calling Ollama API: {str(e)}"
     
